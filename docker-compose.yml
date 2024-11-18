@@ -1,0 +1,57 @@
+version: '3.5'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+      - mongodb
+      - influxdb
+    environment:
+      - DATABASE_URL=postgresql://trading:admin123@postgres:5432/trading
+      - MONGODB_URL=mongodb://mongodb:27017/trading
+      - INFLUXDB_URL=http://influxdb:8086
+
+  postgres:
+    image: postgres:13
+    environment:
+      POSTGRES_DB: trading
+      POSTGRES_USER: trading
+      POSTGRES_PASSWORD: admin123
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  mongodb:
+    image: mongo
+    volumes:
+      - mongodb_data:/data/db
+    ports:
+      - "27018:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: secret
+      MONGO_INITDB_DATABASE: dbz
+
+  influxdb:
+    image: influxdb:2.0
+    ports:
+      - "8086:8086"
+    volumes:
+      - influxdb_data:/var/lib/influxdb2
+    environment:
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+      - DOCKER_INFLUXDB_INIT_USERNAME=trading
+      - DOCKER_INFLUXDB_INIT_PASSWORD=Admin123
+      - DOCKER_INFLUXDB_INIT_ORG=trading-org
+      - DOCKER_INFLUXDB_INIT_BUCKET=trading-bucket
+
+volumes:
+  postgres_data:
+  mongodb_data:
+  influxdb_data:
