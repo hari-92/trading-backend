@@ -1,0 +1,50 @@
+PostgreSQL:
+
+users
+- id
+- username
+- email
+- password_hash
+- created_at
+tokens
+- id
+- symbol
+- name
+- total_supply
+- circulating_supply
+orders
+- id
+- user_id
+- token_id
+- type (buy/sell)
+- price
+- amount
+- status
+- created_at
+wallets
+- id
+- user_id
+- token_id
+- balance
+MongoDB:
+
+matched_orders
+- order_id
+- price
+- amount
+- timestamp
+- candles
+- token_id
+- timestamp
+- open
+- high
+- low
+- close
+- volume
+transaction_history
+- user_id
+- token_id
+- type
+- amount
+- price
+- timestamp

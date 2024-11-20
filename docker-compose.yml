@@ -8,50 +8,67 @@ services:
     ports:
       - "3000:3000"
     depends_on:
-      - postgres
-      - mongodb
-      - influxdb
+      mongo:
+        condition: service_healthy
+      mysql:
+        condition: service_healthy
     environment:
-      - DATABASE_URL=postgresql://trading:admin123@postgres:5432/trading
-      - MONGODB_URL=mongodb://mongodb:27017/trading
-      - INFLUXDB_URL=http://influxdb:8086
-
-  postgres:
-    image: postgres:13
-    environment:
-      POSTGRES_DB: trading
-      POSTGRES_USER: trading
-      POSTGRES_PASSWORD: admin123
+      - NODE_ENV=development
+      - MONGO_URI=mongodb://root:secret@mongo:27017/dev?authSource=admin
+      - MYSQL_HOST=mysql
+      - MYSQL_USER=hari
+      - MYSQL_PASSWORD=secret
+      - MYSQL_DATABASE=trading
     volumes:
-      - postgres_data:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    command: npm run start:dev
 
-  mongodb:
+  redis:
+    image: redis
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    command: redis-server --notify-keyspace-events Ex
+    ports:
+      - "6379:6379"
+
+  mongo:
     image: mongo
-    volumes:
-      - mongodb_data:/data/db
     ports:
-      - "27018:27017"
+      - 27018:27017
+    volumes:
+      - mongo_data:/data/db
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: secret
       MONGO_INITDB_DATABASE: dbz
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+      interval: 30s
+      timeout: 30s
+      retries: 5
 
-  influxdb:
-    image: influxdb:2.0
+  mysql:
+    image: mysql:8.0
+    command: "mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci"
     ports:
-      - "8086:8086"
-    volumes:
-      - influxdb_data:/var/lib/influxdb2
+      - "3306:3306"
     environment:
-      - DOCKER_INFLUXDB_INIT_MODE=setup
-      - DOCKER_INFLUXDB_INIT_USERNAME=trading
-      - DOCKER_INFLUXDB_INIT_PASSWORD=Admin123
-      - DOCKER_INFLUXDB_INIT_ORG=trading-org
-      - DOCKER_INFLUXDB_INIT_BUCKET=trading-bucket
+      MYSQL_ROOT_PASSWORD: rootsecret
+      MYSQL_DATABASE: trading
+      MYSQL_USER: hari
+      MYSQL_PASSWORD: secret
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - mysql_data:/var/lib/mysql
 
 volumes:
-  postgres_data:
-  mongodb_data:
-  influxdb_data:
+  mongo_data:
+  mysql_data:
