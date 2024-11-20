@@ -7,24 +7,18 @@ import {
 } from 'typeorm';
 
 @Entity()
-export class User {
+export class Wallet {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ nullable: true })
-  username: string;
+  @Column()
+  user_id: number;
 
-  @Column({ unique: true })
-  email: string;
+  @Column()
+  token_id: number;
 
-  @Column({ nullable: true })
-  first_name: string;
-
-  @Column({ nullable: true })
-  last_name: string;
-
-  @Column({ nullable: true })
-  avatar: string;
+  @Column({ default: 0 })
+  balance: number;
 
   @CreateDateColumn({
     type: 'timestamp',

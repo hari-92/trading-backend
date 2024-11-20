@@ -19,6 +19,8 @@ services:
       - MYSQL_USER=hari
       - MYSQL_PASSWORD=secret
       - MYSQL_DATABASE=trading
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules

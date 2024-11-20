@@ -7,24 +7,18 @@ import {
 } from 'typeorm';
 
 @Entity()
-export class User {
+export class Token {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ nullable: true })
-  username: string;
+  @Column()
+  symbol: string;
 
-  @Column({ unique: true })
-  email: string;
+  @Column()
+  name: string;
 
-  @Column({ nullable: true })
-  first_name: string;
-
-  @Column({ nullable: true })
-  last_name: string;
-
-  @Column({ nullable: true })
-  avatar: string;
+  @Column()
+  total_supply: number;
 
   @CreateDateColumn({
     type: 'timestamp',

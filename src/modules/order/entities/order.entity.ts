@@ -7,24 +7,30 @@ import {
 } from 'typeorm';
 
 @Entity()
-export class User {
+export class Order {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ nullable: true })
-  username: string;
+  @Column()
+  user_id: number;
 
-  @Column({ unique: true })
-  email: string;
+  @Column()
+  trading_pair_id: number;
 
-  @Column({ nullable: true })
-  first_name: string;
+  @Column()
+  type: string; //limit | market
 
-  @Column({ nullable: true })
-  last_name: string;
+  @Column()
+  side: string; //buy | sell
 
-  @Column({ nullable: true })
-  avatar: string;
+  @Column()
+  amount: number;
+
+  @Column()
+  price: number; //null for market orders
+
+  @Column()
+  status: string; //open | filled | cancelled
 
   @CreateDateColumn({
     type: 'timestamp',
