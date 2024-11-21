@@ -5,6 +5,8 @@ import { CreateUserDto } from '../user/dto/create-user.dto';
 import { JwtService } from '@nestjs/jwt';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
+import { EventEmitter2 } from '@nestjs/event-emitter';
+import { UserRegisteredEvent, UserRegisteredEventName } from '../../events';
 
 @Injectable()
 export class AuthService {
@@ -13,6 +15,7 @@ export class AuthService {
     private readonly cacheManager: Cache,
     private readonly jwtService: JwtService,
     private readonly userService: UserService,
+    private readonly eventEmitter: EventEmitter2,
   ) {}
 
   async login(loginDto: LoginDto) {
@@ -25,6 +28,12 @@ export class AuthService {
       createUserDto.avatar = loginDto.picture;
 
       user = await this.userService.create(createUserDto);
+      if (user) {
+        this.eventEmitter.emit(
+          UserRegisteredEventName,
+          new UserRegisteredEvent(user.id),
+        );
+      }
     }
     const payload = { id: user.id, email: user.email };
     const accessToken = this.jwtService.sign(payload);

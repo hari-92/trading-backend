@@ -18,6 +18,7 @@ import { MatchingEngineModule } from './modules/matching-engine/matching-engine.
 import { TradeModule } from './modules/trade/trade.module';
 import { CandleModule } from './modules/candle/candle.module';
 import { UserTransactionModule } from './modules/user-transaction/user-transaction.module';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { UserTransactionModule } from './modules/user-transaction/user-transacti
     MongooseModule.forRoot(mongoConfig.uri),
     TypeOrmModule.forRoot(mysqlConfig),
     CacheModule.registerAsync(redisConfig),
+    EventEmitterModule.forRoot(),
     AuthModule,
     UserModule,
     TokenModule,
