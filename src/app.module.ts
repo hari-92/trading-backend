@@ -14,6 +14,10 @@ import { TokenModule } from './modules/token/token.module';
 import { TradingPairModule } from './modules/trading-pair/trading-pair.module';
 import { WalletModule } from './modules/wallet/wallet.module';
 import { OrderModule } from './modules/order/order.module';
+import { MatchingEngineModule } from './modules/matching-engine/matching-engine.module';
+import { TradeModule } from './modules/trade/trade.module';
+import { CandleModule } from './modules/candle/candle.module';
+import { UserTransactionModule } from './modules/user-transaction/user-transaction.module';
 
 @Module({
   imports: [
@@ -29,6 +33,10 @@ import { OrderModule } from './modules/order/order.module';
     TradingPairModule,
     WalletModule,
     OrderModule,
+    MatchingEngineModule,
+    TradeModule,
+    CandleModule,
+    UserTransactionModule,
   ],
   controllers: [AppController],
   providers: [AppService],
