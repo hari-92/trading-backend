@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './modules/auth/auth.module';
@@ -19,6 +19,7 @@ import { TradeModule } from './modules/trade/trade.module';
 import { CandleModule } from './modules/candle/candle.module';
 import { UserTransactionModule } from './modules/user-transaction/user-transaction.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
+import { StatLoggerMiddleware } from './middleware/stat-logger.middleware';
 
 @Module({
   imports: [
@@ -43,4 +44,8 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(StatLoggerMiddleware).forRoutes('*');
+  }
+}
