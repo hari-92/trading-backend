@@ -17,8 +17,8 @@ export class Token {
   @Column()
   name: string;
 
-  @Column()
-  total_supply: number;
+  @Column({ type: 'bigint' })
+  total_supply: bigint;
 
   @CreateDateColumn({
     type: 'timestamp',
