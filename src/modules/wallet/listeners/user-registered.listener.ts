@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { OnEvent } from '@nestjs/event-emitter';
-import { UserRegisteredEvent, UserRegisteredEventName } from '../../../events';
+import { USER_REGISTERED_EVENT, UserRegisteredEvent } from '../../../events';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Wallet } from '../entities/wallet.entity';
 import { Repository } from 'typeorm';
@@ -13,7 +13,7 @@ export class WalletCreationListener {
     private readonly walletRepository: Repository<Wallet>,
   ) {}
 
-  @OnEvent(UserRegisteredEventName)
+  @OnEvent(USER_REGISTERED_EVENT)
   handleUserRegisteredEvent(event: UserRegisteredEvent) {
     console.log(
       `start handleUserRegisteredEvent with user_id: ${event.userID}`,

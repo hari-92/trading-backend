@@ -24,6 +24,10 @@ export class UserService {
     return `This action returns a #${id} user`;
   }
 
+  async findById(id: number) {
+    return this.userRepository.findOneBy({ id });
+  }
+
   async findByEmail(email: string) {
     return this.userRepository.findOneBy({
       email: email,

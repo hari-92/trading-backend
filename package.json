@@ -34,13 +34,15 @@
     "@types/passport-google-oauth20": "^2.0.16",
     "cache-manager": "^5.7.6",
     "cache-manager-redis-store": "^3.0.1",
+    "colors": "^1.4.0",
     "mongoose": "^8.8.2",
     "mysql2": "^3.11.4",
     "passport": "^0.7.0",
     "passport-google-oauth20": "^2.0.0",
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.1",
-    "typeorm": "^0.3.20"
+    "typeorm": "^0.3.20",
+    "winston": "^3.17.0"
   },
   "devDependencies": {
     "@nestjs/cli": "^10.0.0",

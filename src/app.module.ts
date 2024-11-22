@@ -1,4 +1,4 @@
-import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './modules/auth/auth.module';
@@ -19,7 +19,8 @@ import { TradeModule } from './modules/trade/trade.module';
 import { CandleModule } from './modules/candle/candle.module';
 import { UserTransactionModule } from './modules/user-transaction/user-transaction.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
-import { StatLoggerMiddleware } from './middleware/stat-logger.middleware';
+import { JwtModule } from '@nestjs/jwt';
+import { jwtConfig } from './config/jwt.config';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { StatLoggerMiddleware } from './middleware/stat-logger.middleware';
     TypeOrmModule.forRoot(mysqlConfig),
     CacheModule.registerAsync(redisConfig),
     EventEmitterModule.forRoot(),
+    JwtModule.registerAsync(jwtConfig),
     AuthModule,
     UserModule,
     TokenModule,
@@ -44,8 +46,4 @@ import { StatLoggerMiddleware } from './middleware/stat-logger.middleware';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule implements NestModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer.apply(StatLoggerMiddleware).forRoutes('*');
-  }
-}
+export class AppModule {}

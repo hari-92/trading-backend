@@ -1,7 +1,17 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { TokenService } from './token.service';
 import { CreateTokenDto } from './dto/create-token.dto';
 import { UpdateTokenDto } from './dto/update-token.dto';
+import { PaginationQueryDto } from '../../common/dto/pagination-query.dto';
 
 @Controller('token')
 export class TokenController {
@@ -13,8 +23,8 @@ export class TokenController {
   }
 
   @Get()
-  findAll() {
-    return this.tokenService.findAll();
+  findAll(@Query() paginationQuery: PaginationQueryDto) {
+    return this.tokenService.findAll(paginationQuery);
   }
 
   @Get(':id')

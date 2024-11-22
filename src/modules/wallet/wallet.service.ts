@@ -4,6 +4,7 @@ import { UpdateWalletDto } from './dto/update-wallet.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Wallet } from './entities/wallet.entity';
 import { Repository } from 'typeorm';
+import { WalletFilter } from './filter/wallet.filter';
 
 @Injectable()
 export class WalletService {
@@ -16,8 +17,8 @@ export class WalletService {
     return this.walletRepository.save(createWalletDto);
   }
 
-  findAll() {
-    return `This action returns all wallet`;
+  findAll(filter: WalletFilter) {
+    return this.walletRepository.findBy(filter);
   }
 
   findOne(id: number) {

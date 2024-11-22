@@ -6,11 +6,16 @@ import {
   Param,
   Patch,
   Post,
+  Req,
+  UseGuards,
 } from '@nestjs/common';
 import { WalletService } from './wallet.service';
 import { CreateWalletDto } from './dto/create-wallet.dto';
 import { UpdateWalletDto } from './dto/update-wallet.dto';
+import { AuthGuard } from '../auth/guards/auth.guard';
+import { WalletFilter } from './filter/wallet.filter';
 
+@UseGuards(AuthGuard)
 @Controller('wallet')
 export class WalletController {
   constructor(private readonly walletService: WalletService) {}
@@ -21,8 +26,11 @@ export class WalletController {
   }
 
   @Get()
-  findAll() {
-    return this.walletService.findAll();
+  findAll(@Req() req) {
+    const { user } = req;
+    const filter = new WalletFilter();
+    filter.user_id = user.id;
+    return this.walletService.findAll(filter);
   }
 
   @Get(':id')

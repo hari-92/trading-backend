@@ -6,7 +6,7 @@ import { JwtService } from '@nestjs/jwt';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { UserRegisteredEvent, UserRegisteredEventName } from '../../events';
+import { USER_REGISTERED_EVENT, UserRegisteredEvent } from '../../events';
 
 @Injectable()
 export class AuthService {
@@ -30,7 +30,7 @@ export class AuthService {
       user = await this.userService.create(createUserDto);
       if (user) {
         this.eventEmitter.emit(
-          UserRegisteredEventName,
+          USER_REGISTERED_EVENT,
           new UserRegisteredEvent(user.id),
         );
       }

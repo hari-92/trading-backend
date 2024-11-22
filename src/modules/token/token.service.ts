@@ -4,6 +4,8 @@ import { UpdateTokenDto } from './dto/update-token.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Token } from './entities/token.entity';
 import { Repository } from 'typeorm';
+import { paginate } from '../../common/utils/pagination.util';
+import { PaginationQueryDto } from '../../common/dto/pagination-query.dto';
 
 @Injectable()
 export class TokenService {
@@ -16,8 +18,8 @@ export class TokenService {
     return this.tokenRepository.save(createTokenDto);
   }
 
-  findAll() {
-    return `This action returns all token`;
+  findAll(paginationQuery: PaginationQueryDto) {
+    return paginate(this.tokenRepository, paginationQuery);
   }
 
   findOne(id: number) {
