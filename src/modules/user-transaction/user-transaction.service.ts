@@ -9,12 +9,12 @@ import { Model } from 'mongoose';
 export class UserTransactionService {
   constructor(
     @InjectModel(UserTransaction.name)
-    private readonly userRepository: Model<UserTransaction>,
+    private readonly userTransactionRepository: Model<UserTransaction>,
   ) {}
 
   create(createUserTransactionDto: CreateUserTransactionDto) {
     const now = new Date();
-    return this.userRepository.create({
+    return this.userTransactionRepository.create({
       ...createUserTransactionDto,
       createdAt: now,
       updatedAt: now,

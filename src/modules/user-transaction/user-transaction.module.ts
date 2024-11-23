@@ -6,14 +6,18 @@ import {
   UserTransaction,
   UserTransactionSchema,
 } from './schemas/user-transaction.schema';
+import { UserTransactionCreationListener } from './listeners/order-created.listener';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { Order } from '../order/entities/order.entity';
 
 @Module({
   imports: [
     MongooseModule.forFeature([
       { name: UserTransaction.name, schema: UserTransactionSchema },
     ]),
+    TypeOrmModule.forFeature([Order]),
   ],
   controllers: [UserTransactionController],
-  providers: [UserTransactionService],
+  providers: [UserTransactionService, UserTransactionCreationListener],
 })
 export class UserTransactionModule {}

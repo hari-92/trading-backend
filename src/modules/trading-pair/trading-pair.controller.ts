@@ -6,11 +6,14 @@ import {
   Param,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { TradingPairService } from './trading-pair.service';
 import { CreateTradingPairDto } from './dto/create-trading-pair.dto';
 import { UpdateTradingPairDto } from './dto/update-trading-pair.dto';
+import { AuthGuard } from '../auth/guards/auth.guard';
 
+@UseGuards(AuthGuard)
 @Controller('trading-pair')
 export class TradingPairController {
   constructor(private readonly tradingPairService: TradingPairService) {}

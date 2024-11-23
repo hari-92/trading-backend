@@ -5,6 +5,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { OrderSide, OrderStatus, OrderType } from '../enums/order.enum';
 
 @Entity()
 export class Order {
@@ -17,20 +18,35 @@ export class Order {
   @Column()
   trading_pair_id: number;
 
-  @Column()
-  type: string; //limit | market
+  @Column({
+    type: 'enum',
+    enum: OrderType,
+    nullable: false,
+    comment: 'LIMIT = 1,MARKET = 2',
+  })
+  type: OrderType;
 
-  @Column()
-  side: string; //buy | sell
+  @Column({
+    type: 'enum',
+    enum: OrderSide,
+    nullable: false,
+    comment: 'BUY = 1, SELL = 2',
+  })
+  side: OrderSide;
 
   @Column()
   amount: number;
 
-  @Column()
+  @Column({ nullable: true })
   price: number; //null for market orders
 
-  @Column()
-  status: string; //open | filled | cancelled
+  @Column({
+    type: 'enum',
+    enum: OrderStatus,
+    nullable: false,
+    comment: 'OPEN = 1, FILLED = 2, CANCELLED = 3',
+  })
+  status: OrderStatus;
 
   @CreateDateColumn({
     type: 'timestamp',

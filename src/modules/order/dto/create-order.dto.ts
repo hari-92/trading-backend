@@ -1,9 +1,10 @@
+import { OrderSide, OrderType } from '../enums/order.enum';
+
 export class CreateOrderDto {
   user_id: number;
   trading_pair_id: number;
-  type: string;
-  side: string;
+  type: OrderType;
+  side: OrderSide;
   amount: number;
   price: number;
-  status: string;
 }
