@@ -9,7 +9,8 @@ export enum OrderType {
 }
 
 export enum OrderStatus {
-  OPEN,
+  OPEN = 1,
   FILLED,
+  PARTIALLY_FILLED,
   CANCELLED,
 }

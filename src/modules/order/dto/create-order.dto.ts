@@ -5,6 +5,6 @@ export class CreateOrderDto {
   trading_pair_id: number;
   type: OrderType;
   side: OrderSide;
-  amount: number;
+  original_amount: number;
   price: number;
 }

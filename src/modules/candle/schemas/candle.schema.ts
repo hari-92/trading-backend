@@ -32,6 +32,12 @@ export class Candle {
 
   @Prop()
   timestamp: Date;
+
+  @Prop()
+  created_at: Date;
+
+  @Prop()
+  updated_at: Date;
 }
 
 export const CandleSchema = SchemaFactory.createForClass(Candle);

@@ -35,7 +35,10 @@ export class Order {
   side: OrderSide;
 
   @Column()
-  amount: number;
+  original_amount: number;
+
+  @Column({ default: 0 })
+  executed_amount: number;
 
   @Column({ nullable: true })
   price: number; //null for market orders
@@ -44,7 +47,7 @@ export class Order {
     type: 'enum',
     enum: OrderStatus,
     nullable: false,
-    comment: 'OPEN = 1, FILLED = 2, CANCELLED = 3',
+    comment: 'OPEN = 0, FILLED = 1,PARTIALLY_FILLED = 2, CANCELLED = 3',
   })
   status: OrderStatus;
 

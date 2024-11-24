@@ -1,16 +1,11 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Param, UseGuards } from '@nestjs/common';
 import { TradeService } from './trade.service';
-import { CreateTradeDto } from './dto/create-trade.dto';
-import { UpdateTradeDto } from './dto/update-trade.dto';
+import { AuthGuard } from '../auth/guards/auth.guard';
 
+@UseGuards(AuthGuard)
 @Controller('trade')
 export class TradeController {
   constructor(private readonly tradeService: TradeService) {}
-
-  @Post()
-  create(@Body() createTradeDto: CreateTradeDto) {
-    return this.tradeService.create(createTradeDto);
-  }
 
   @Get()
   findAll() {
@@ -20,15 +15,5 @@ export class TradeController {
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.tradeService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTradeDto: UpdateTradeDto) {
-    return this.tradeService.update(+id, updateTradeDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.tradeService.remove(+id);
   }
 }

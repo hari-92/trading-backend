@@ -6,7 +6,6 @@ import {
   UserTransaction,
   UserTransactionSchema,
 } from './schemas/user-transaction.schema';
-import { UserTransactionCreationListener } from './listeners/order-created.listener';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Order } from '../order/entities/order.entity';
 
@@ -18,6 +17,6 @@ import { Order } from '../order/entities/order.entity';
     TypeOrmModule.forFeature([Order]),
   ],
   controllers: [UserTransactionController],
-  providers: [UserTransactionService, UserTransactionCreationListener],
+  providers: [UserTransactionService],
 })
 export class UserTransactionModule {}

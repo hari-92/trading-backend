@@ -28,7 +28,7 @@ export class UserTransactionCreationListener {
       const userTransaction = new this.userTransactionRepository({
         user_id: order.user_id,
         type: UserTransactionType.TRADE,
-        amount: order.amount,
+        amount: order.original_amount,
         token_id: orderId,
       });
       await userTransaction.save();

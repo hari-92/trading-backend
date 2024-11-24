@@ -5,8 +5,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Order } from './entities/order.entity';
 import { OrderStatus } from './enums/order.enum';
-import { EventEmitter2 } from '@nestjs/event-emitter';
-import { ORDER_CREATED_EVENT, OrderCreatedEvent } from '../../events';
 import { Wallet } from '../wallet/entities/wallet.entity';
 import { MatchingEngineService } from './matching-engine.service';
 
@@ -15,18 +13,17 @@ export class OrderService {
   constructor(
     @InjectRepository(Order)
     private readonly orderRepository: Repository<Order>,
-    private readonly eventEmitter: EventEmitter2,
     @InjectRepository(Wallet)
     private readonly walletRepository: Repository<Wallet>,
     private readonly matchingEngineService: MatchingEngineService,
   ) {}
 
   async create(createOrderDto: CreateOrderDto) {
-    const { amount, price, user_id } = createOrderDto;
+    const { original_amount, price, user_id } = createOrderDto;
     const wallet = await this.walletRepository.findOneBy({
       user_id,
     });
-    if (wallet.balance < amount * price) {
+    if (wallet.balance < original_amount * price) {
       throw new HttpException(
         'Insufficient balance',
         HttpStatus.INTERNAL_SERVER_ERROR,
@@ -37,12 +34,9 @@ export class OrderService {
       status: OrderStatus.OPEN,
     });
     if (result) {
-      this.eventEmitter.emit(
-        ORDER_CREATED_EVENT,
-        new OrderCreatedEvent(result.id),
-      );
+      await this.matchingEngineService.processOrder(result);
     }
-    await this.matchingEngineService.processOrder(result);
+
     return result;
   }
 
